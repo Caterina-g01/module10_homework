@@ -12,94 +12,97 @@ document.addEventListener("DOMContentLoaded", function () {
 	const chatWindow = document.getElementById("chatWindow");
 	const blocks = document.querySelectorAll(".exercise-block");
 
-let websocket;
+	let websocket;
 
-function scrollToBottom(element) {
-	element.scrollTop = element.scrollHeight;
-}
+	let currentIndex = 0;
 
-function writeToChat(message, isUser) {
-	let messageContainer = document.createElement("div");
-	messageContainer.textContent = message;
-	messageContainer.classList.add(isUser ? "user-input" : "server-output");
-	messageContainer.style.display = "block";
-	chatWindow.appendChild(messageContainer);
+	function scrollToBottom(element) {
+		element.scrollTop = element.scrollHeight;
+	}
 
-	scrollToBottom(chatWindow);
-}
-
-sendBtn.addEventListener("click", () => {
-const message = input.value;
-if (message !== "") {
-	websocket = new WebSocket(wsUrl);
-
-	websocket.onopen = function () {
-		writeToChat(message, true);
-		websocket.send(message);
-		input.value = "";
-	};
-
-	websocket.onmessage = function (evt) {
-		writeToChat(evt.data);
-	};
-
-	websocket.onerror = function () {
-		writeToChat(error);
-		console.log("Упс, ошибка");
-	};
-}
-});
-
-const error = () => {
-	let errorMessage = document.createElement("div");
-	errorMessage.textContent = "нет возможности получить текущее местоположение";
-	errorMessage.classList.add("user-input");
-	errorMessage.style.display = "block";
-	chatWindow.appendChild(errorMessage);
-	scrollToBottom(chatWindow);
-}
-
-const success = (position) => {
-	const latitude = position.coords.latitude;
-	const longitude = position.coords.longitude;
-
-	let locationMessage = document.createElement('div');
-	locationMessage.innerHTML = `<a href="https://www.openstreetmap.org/#map=18/${latitude}/${longitude}" target="_blank">ваша геолокация</a>`;
-	locationMessage.style.display = 'block';
-	locationMessage.classList.add('user-input');
-	chatWindow.appendChild(locationMessage);
-
-	scrollToBottom(chatWindow);
-}
-
-locationBtn.addEventListener("click", () => {
-	if (!navigator.geolocation) {
-		let errorMessage = document.createElement("div");
-		errorMessage.textContent = "геолокация не поддерживается вашим браузером";
-		errorMessage.style.display = "block";
-		errorMessage.classList.add("server-output");
-		chatWindow.appendChild(errorMessage);
-
-		scrollToBottom(chatWindow);
-	} else {
-		let locationInfo = document.createElement("div");
-		locationInfo.textContent = "секунду...";
-		locationInfo.style.display = "block";
-		locationInfo.classList.add("user-input");
-		chatWindow.appendChild(locationInfo);
-		navigator.geolocation.getCurrentPosition(success, error);
+	function writeToChat(message, isUser) {
+		let messageContainer = document.createElement("div");
+		messageContainer.textContent = message;
+		messageContainer.classList.add(isUser ? "user-input" : "server-output");
+		messageContainer.style.display = "block";
+		chatWindow.appendChild(messageContainer);
 
 		scrollToBottom(chatWindow);
 	}
-});
+
+	sendBtn.addEventListener("click", () => {
+		const message = input.value;
+		if (message !== "") {
+			websocket = new WebSocket(wsUrl);
+
+			websocket.onopen = function () {
+				writeToChat(message, true);
+				websocket.send(message);
+				input.value = "";
+			};
+
+			websocket.onmessage = function (evt) {
+				writeToChat(evt.data);
+			};
+
+			websocket.onerror = function () {
+				writeToChat(error);
+				console.log("Упс, ошибка");
+			};
+		}
+	});
+
+	const error = () => {
+		let errorMessage = document.createElement("div");
+		errorMessage.textContent = "нет возможности получить текущее местоположение";
+		errorMessage.classList.add("user-input");
+		errorMessage.style.display = "block";
+		chatWindow.appendChild(errorMessage);
+		scrollToBottom(chatWindow);
+	}
+
+	const success = (position) => {
+		const latitude = position.coords.latitude;
+		const longitude = position.coords.longitude;
+
+		let locationMessage = document.createElement('div');
+		locationMessage.innerHTML = `<a href="https://www.openstreetmap.org/#map=18/${latitude}/${longitude}" target="_blank">ваша геолокация</a>`;
+		locationMessage.style.display = 'block';
+		locationMessage.classList.add('user-input');
+		chatWindow.appendChild(locationMessage);
+
+		scrollToBottom(chatWindow);
+	}
+
+	locationBtn.addEventListener("click", () => {
+		if (!navigator.geolocation) {
+			let errorMessage = document.createElement("div");
+			errorMessage.textContent = "геолокация не поддерживается вашим браузером";
+			errorMessage.style.display = "block";
+			errorMessage.classList.add("server-output");
+			chatWindow.appendChild(errorMessage);
+
+			scrollToBottom(chatWindow);
+		} else {
+			let locationInfo = document.createElement("div");
+			locationInfo.textContent = "секунду...";
+			locationInfo.style.display = "block";
+			locationInfo.classList.add("user-input");
+			chatWindow.appendChild(locationInfo);
+			navigator.geolocation.getCurrentPosition(success, error);
+
+			scrollToBottom(chatWindow);
+		}
+	});
 
 	exerciseLinks.forEach((link, index) => {
 		link.addEventListener("click", function () {
-			exercises[index].scrollIntoView({ behavior: "smooth" });
+			currentIndex = index;
+			exercises[currentIndex].scrollIntoView({ behavior: "smooth" });
 			exerciseLinks.forEach(link => link.classList.remove("active"));
 			link.classList.add("active");
 			exercises.forEach(exercise => exercise.classList.remove("active"));
-			exercises[index].classList.add("active");
+			exercises[currentIndex].classList.add("active");
 		});
 	});
 
@@ -107,6 +110,9 @@ locationBtn.addEventListener("click", () => {
 		block.addEventListener("click", function () {
 			exercises.forEach(exercise => exercise.classList.remove("active"));
 			exercises[index].classList.add("active");
+			exerciseLinks.forEach(link => link.classList.remove("active"));
+			exerciseLinks[index].classList.add("active");
+			currentIndex = index;
 		});
 	});
 
