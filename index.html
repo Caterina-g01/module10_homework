@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/style.css">
+	<title>API</title>
+</head>
+
+<body>
+	<header class="container">
+		<div class="title-block">
+			<h1 class="title">Задания. Модуль 10. API браузера</h1>
+		</div>
+		<div class="nav">
+			<ul class="nav-list">
+				<li class="nav-link">Задание 1</li>
+				<li class="nav-link">Задание 2</li>
+				<li class="nav-link">Задание 3</li>
+			</ul>
+		</div>
+	</header>
+	<main class="container">
+		<div class="exercise-container">
+			<section class="exercise-one exercise">
+				<div class="exercise-block block1">
+					<div class="exercise-text">При клике на эту кнопку поменяется иконка</div>
+					<button class="exercise-one__btn">
+						<div class="btn-content">
+							<div class="btn-text">Нажми на меня</div>
+							<svg class="btn-icon first-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+								fill="currentColor" viewBox="0 0 16 16">
+								<path fill-rule="evenodd"
+									d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-5.904-2.854a.5.5 0 1 1 .707.708L6.707 9.95h2.768a.5.5 0 1 1 0 1H5.5a.5.5 0 0 1-.5-.5V6.475a.5.5 0 1 1 1 0v2.768z" />
+							</svg>
+							<svg style="display: none;" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+								fill="currentColor" class="btn-icon second-icon" viewBox="0 0 16 16">
+								<path
+									d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-5.904-2.803a.5.5 0 1 1 .707.707L6.707 10h2.768a.5.5 0 0 1 0 1H5.5a.5.5 0 0 1-.5-.5V6.525a.5.5 0 0 1 1 0v2.768z" />
+							</svg>
+						</div>
+					</button>
+				</div>
+			</section>
+			<section class="exercise-two exercise">
+				<div class="exercise-block block2">
+					<div class="exercise-text">При клике на эту кнопку можно узнать данные о размерах окна браузера</div>
+					<button class="exercise-two__btn">Нажми на меня</button>
+				</div>
+			</section>
+			<section class="exercise-three exercise">
+				<div class="exercise-block block3">
+					<div class="exercise-text block3-text">Тут можно поболтать с самим собой, или получить свою гео-локацию</div>
+					<div class="chat-wrap">
+						<div class="chat-head">
+							<input class="input" id="input" type="text" placeholder="Введите сообщение...">
+							<button class="send-btn">Отправить</button>
+							<button class="geo-btn">Геолокация</button>
+						</div>
+						<div class="chat-window" id="chatWindow">
+							<div class="user-input" id="userInput"></div>
+							<div class="server-output" id="serverOutput"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+	</main>
+	<script src="js/script.js"></script>
+</body>
+
+</html>
